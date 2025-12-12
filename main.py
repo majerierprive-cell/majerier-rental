@@ -15,9 +15,10 @@ import time
 import re
 from typing import List, Dict
 import logging
-from dotenv import load_dotenv
+# 로컬용
+# from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
 # 로깅 설정
 logging.basicConfig(level=logging.INFO)
