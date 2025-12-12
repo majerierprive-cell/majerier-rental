@@ -79,6 +79,7 @@ def save_screenshot(driver, name: str):
 
 def login(driver):
     try:
+        print("LOGIN_URL:", repr(LOGIN_URL), type(LOGIN_URL))
         driver.get(LOGIN_URL)
         time.sleep(1)
         driver.find_element(By.ID, "Login_id").send_keys(
