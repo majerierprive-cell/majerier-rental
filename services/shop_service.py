@@ -16,7 +16,7 @@ from utils.file_utils import save_screenshot
 logger = logging.getLogger(__name__)
 
 
-def navigate_to_daily_schedule(driver):
+def navigate_to_shop_daily_schedule(driver):
     try:
         logger.info("메뉴 이동 중...")
         driver.switch_to.default_content()
@@ -28,34 +28,21 @@ def navigate_to_daily_schedule(driver):
 
         try:
             menu = WebDriverWait(driver, 3).until(EC.element_to_be_clickable(
-                (By.XPATH, "//div[contains(text(), '대여일정')]")))
+                (By.XPATH, "//div[contains(text(), '샵일정')]")))
             logging.info("Find menu from name: %s", menu.text)
             driver.execute_script("arguments[0].click();", menu)
         except:
-            menu = driver.find_element(By.XPATH, "/html/body/div/div/div[4]")
+            menu = driver.find_element(By.XPATH, "/html/body/div/div/div[3]")
             logging.info("Find menu from element: %s", menu.text)
             driver.execute_script("arguments[0].click();", menu)
 
-        time.sleep(2)
-        driver.switch_to.default_content()
-        try:
-            driver.switch_to.frame(1)
-        except:
-            for f in driver.find_elements(By.TAG_NAME, "frame"):
-                if f.get_attribute("name") != "topFrame":
-                    driver.switch_to.frame(f)
-                    break
-
-        daily_btn = WebDriverWait(driver, 5).until(EC.presence_of_element_located(
-            (By.XPATH, "//a[contains(text(), '일간')] | //a[contains(@href, 'rent_day')]")))
-        driver.execute_script("arguments[0].click();", daily_btn)
         time.sleep(2)
     except Exception as e:
         save_screenshot(driver, "error_nav")
         raise e
 
 
-def navigate_to_date(driver, target_date: datetime):
+def navigate_to_shop_date(driver, target_date: datetime):
     try:
         driver.switch_to.default_content()
         try:
@@ -111,11 +98,11 @@ def navigate_to_date(driver, target_date: datetime):
         raise e
 
 
-def download_excel_for_date(driver, target_date: datetime):
+def download_excel_for_shop_date(driver, target_date: datetime):
     from utils.file_utils import DOWNLOAD_DIR
     date_str = target_date.strftime("%Y-%m-%d")
     try:
-        navigate_to_date(driver, target_date)
+        navigate_to_shop_date(driver, target_date)
         time.sleep(2)
         driver.switch_to.default_content()
         try:
@@ -127,7 +114,7 @@ def download_excel_for_date(driver, target_date: datetime):
 
         try:
             excel_btn = WebDriverWait(driver, 5).until(EC.element_to_be_clickable(
-                (By.XPATH, "//a[contains(text(), '엑셀')] | //a[contains(@href, 'excel')] | //img[contains(@src, 'excel')]/parent::a")))
+                (By.XPATH, "//*[@id='body']/span/img | //img[contains(@src, 'excel')]")))
             driver.execute_script("arguments[0].click();", excel_btn)
         except Exception as e:
             logger.error(f"엑셀 버튼 못찾음: {e}")

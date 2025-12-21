@@ -14,8 +14,7 @@ def login(driver):
     from main import LOGIN_URL, USERNAME, PASSWORD
     from utils.file_utils import save_screenshot
     logger.info("LOGIN_URL: %s", LOGIN_URL)
-    logger.info("name: %s", USERNAME)
-    logger.info("pw: %s", PASSWORD)
+
     try:
         driver.get(LOGIN_URL)
         time.sleep(1)
